@@ -1,3 +1,25 @@
+<?php
+//https://api.github.com/users/Bamuel/repos
+$GitHubusername = "Bamuel";
+
+?>
+<?php
+$url="https://api.github.com/users/Bamuel/repos";
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/vnd.github.v3+json",
+            "Content-Type: text/plain",
+            "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 YaBrowser/16.3.0.7146 Yowser/2.5 Safari/537.36"
+        ));
+curl_setopt($ch, CURLOPT_HTTPGET, true);
+curl_setopt($ch, CURLOPT_URL,$url);
+$result=curl_exec($ch);
+curl_close($ch);
+var_dump(json_decode($result, true));
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,3 +61,4 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>
+
