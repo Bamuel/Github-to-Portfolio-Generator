@@ -4,7 +4,7 @@ $GitHubusername = "Bamuel";
 
 ?>
 <?php
-$url="https://api.github.com/users/Bamuel/repos";
+$url="https://api.github.com/users/".$GitHubusername."/repos";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -18,7 +18,12 @@ curl_setopt($ch, CURLOPT_HTTPGET, true);
 curl_setopt($ch, CURLOPT_URL,$url);
 $result=curl_exec($ch);
 curl_close($ch);
-var_dump(json_decode($result, true));
+$queryresult = json_decode($result, true);
+
+echo $queryresult[0]['name']; //echo owner of 1st project alphabetical
+echo $queryresult[1]['name']; //echo owner of 2nd project alphabetical
+echo $queryresult[2]['name']; //echo owner of 3rd project alphabetical
+echo $queryresult[3]['name']; //echo owner of 4th project alphabetical
 ?>
 <!DOCTYPE html>
 <html lang="en">
