@@ -1,26 +1,36 @@
 <?php
 //https://api.github.com/users/Bamuel/repos
+
 $GitHubusername = "Bamuel";
+$curl = curl_init();
 
-?>
-<?php
-$url = "https://api.github.com/users/" . $GitHubusername . "/repos";
+curl_setopt_array($curl, [
+    CURLOPT_URL => "https://api.github.com/users/" . $GitHubusername . "/repos",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "GET",
+    CURLOPT_POSTFIELDS => "",
+    CURLOPT_HTTPHEADER => array(
+        "Accept: application/vnd.github.v3+json",
+        "Content-Type: text/plain",
+        "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 YaBrowser/16.3.0.7146 Yowser/2.5 Safari/537.36")]);
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept: application/vnd.github.v3+json",
-    "Content-Type: text/plain",
-    "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 YaBrowser/16.3.0.7146 Yowser/2.5 Safari/537.36"
-));
-curl_setopt($ch, CURLOPT_HTTPGET, true);
-curl_setopt($ch, CURLOPT_URL, $url);
-$result = curl_exec($ch);
-curl_close($ch);
-$queryresult = json_decode($result, true);
+$response = curl_exec($curl);
+$err = curl_error($curl);
 
-$queryresultcount = count($queryresult);//number of projects
+curl_close($curl);
+
+if ($err) {
+    echo "cURL Error #:" . $err;
+}
+else {
+    $queryresult = json_decode($response, true);
+    $queryresultcount = count($queryresult);//number of projects
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -45,7 +55,8 @@ $queryresultcount = count($queryresult);//number of projects
         for ($x = 0; $x <= $queryresultcount - 1; $x++) {
             if ($queryresult[$x]['fork'] == 1) {
                 $fork = "<img src=\"repo-forked.svg\" alt=\"github fork symbol\"> project been forked";
-            } else {
+            }
+            else {
                 $fork = "";
             }
 
@@ -54,7 +65,7 @@ $queryresultcount = count($queryresult);//number of projects
             <div class=\"card h-100\">
                 <div class=\"card-body\">
                     <h4 class=\"card-title\">
-                        <a target='_blank' href=\"".$queryresult[$x]['html_url']."\">" . $queryresult[$x]['name'] . "</a><h6>$fork</h6>
+                        <a target='_blank' href=\"" . $queryresult[$x]['html_url'] . "\">" . $queryresult[$x]['name'] . "</a><h6>$fork</h6>
                     </h4>
                     <p class=\"card-text\">" . $queryresult[$x]['description'] . "</p>
                 </div>
@@ -64,14 +75,14 @@ $queryresultcount = count($queryresult);//number of projects
 
         ?>
 
-       <!-- <div class="col-lg-4 col-sm-6 portfolio-item">
+        <!-- <div class="col-lg-4 col-sm-6 portfolio-item">
             <div class="card h-100">
                 <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
                 <div class="card-body">
                     <h4 class="card-title">
                         <a href="#"><?php /*echo $queryresult[0]['name']; */ ?></a><h6> - Owner Bamuel</h6>
                     </h4>
-                    <p class="card-text"><?php /*echo $queryresult[0]['description']; */?></p>
+                    <p class="card-text"><?php /*echo $queryresult[0]['description']; */ ?></p>
                 </div>
             </div>
         </div>-->
